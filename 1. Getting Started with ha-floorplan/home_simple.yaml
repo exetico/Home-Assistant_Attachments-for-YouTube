@@ -1,0 +1,56 @@
+title: Anton Floorplan
+views:
+  - title: Sample Entities
+    path: sample-entities
+    icon: ""
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - entity: light.hueXYZ_light
+            name: Test Light 1 (light.hue1)
+          - entity: light.hue2_light
+            name: Test Light 2 (light.hue2)
+        title: Test Entities
+  - title: My First Floorplan
+    path: floorplan
+    theme: Google Dark Theme
+    panel: true
+    type: panel
+    badges: []
+    cards:
+      - config:
+          console_log_level: info
+          defaults:
+            hover_action: hover-info
+            tap_action: more-info
+          image: /local/floorplan/home_simple/home_simple.svg
+          log_level: info
+          rules:
+            - element: light.hue1
+              entity: light.hueXYZ_light
+              state_action:
+                action: call-service
+                service: floorplan.image_set
+                service_data: >-
+                  /local/floorplan/home_simple/home_simple/light_${entity.state}.svg
+              tap_action: toggle
+            - element: light.hue1.button
+              entity: light.hueXYZ_light
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data: button-${entity.state}
+              tap_action:
+                action: call-service
+                service: homeassistant.toggle
+            - element: light.hue1.text
+              entity: light.hueXYZ_light
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data: ${entity.state}
+              tap_action: false
+          stylesheet: /local/floorplan/home_simple/home_simple.css
+        full_height: true
+        type: custom:floorplan-card
