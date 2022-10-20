@@ -1,0 +1,41 @@
+title: Modern Floorplan
+views:
+  - title: My Modern Floorplan
+    path: floorplan
+    theme: Google Dark Theme
+    panel: true
+    type: panel
+    badges: []
+    cards:
+      - config:
+          console_log_level: info
+          defaults:
+            hover_action: hover-info
+            tap_action: more-info
+          image: /local/floorplan/home_modern/home_modern.svg
+          rules:
+            - element: light-restroom-primary
+              entity: light.hue3_light
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data: entitystate-${entity.state}
+              tap_action:
+                action: call-service
+                service: homeassistant.toggle
+            - element: light-bedroom-primary
+              entity: light.hue2_light
+              state_action:
+                action: call-service
+                service: floorplan.style_set
+                service_data:
+                  style: >
+                    > var rgbColor = entity && entity.attributes &&
+                    entity.attributes.rgb_color ? entity.attributes.rgb_color :
+                    false; return rgbColor? `fill:rgb(${rgbColor});` : '';
+              double_tap_action:
+                action: call-service
+                service: homeassistant.toggle
+          stylesheet: /local/floorplan/home_modern/home_modern.css
+        full_height: true
+        type: custom:floorplan-card

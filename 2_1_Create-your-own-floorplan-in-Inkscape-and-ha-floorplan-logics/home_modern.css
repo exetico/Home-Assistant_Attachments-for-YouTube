@@ -1,0 +1,9 @@
+/* All good :/ */
+.entitystate-on {
+  opacity: 0;
+}
+
+.entitystate-off {
+  opacity: 0.7;
+  fill: rgb(49, 45, 45) !important;
+}
