@@ -1,110 +1,41 @@
-/* Add "fade transition", for the "opacity" effect. Kindly note that transition doesn't work for "display:none"/"display:block"
+.entitystate-on{ 
+    opacity: 0;
+}
 
-In a case where most people would have used display:none > display:block to hide/show the element,
-    you can use opacity:0 and opacity 1, and define "pointer-events: none;" / "pointer-events: initial" to get (almost) the same results, but WITH the transition effect
-    a opacity:0 element without pointer-events disabled, will trigger a mouse-click, even if you can't see it due to opacity:0....
-*/
-[id^="light-"]{
-    transition: opacity 0.5s;
+.entitystate-off{
+    opacity:0.7;
+    fill: rgb(49,45,45)!important; 
+} 
+
+#light-restroom-primary{
+    fill: red!important; 
     opacity:1;
 }
 
-/* Match all id's starting with "light-".
-If opacity is set in another CSS selector, this will be overwritten, if you're not using !important, but.. You dont want to use that, in this case.
-Another way to overrule a style, is by defining a more specific selector. If style a is "div div a{}", you'll be able to overrule that, if you're more specific like "div.container div.full-page p.bodytext a{}"
-   ^--- But, !important or styles defined on the object in HTML, will always override the normal way of prioritizing CSS
-*/
-[id^="light-"].entitystate-on{
-    opacity:0;
+.entitystate-off#light-restroom-primary{
+    fill: orange!important; 
+    opacity:1;
+}#light-restroom-primary{
+    fill:orange!important;
 }
-[id^="light-"].entitystate-off{
+
+#light-restroom-primary{
+    fill: blue!important;
     opacity:1;
 }
 
-
-/* Here you can define the fill of the object, including the opacity*/
-[id="light.bedroom.primary.nono"].entitystate-off{
-    fill: rgb(133, 133, 133)!important;
-    fill-opacity: 0.5!important;
+#layer3 .entitystate-off{
+    fill: green!important;
+    opacity:1;
 }
 
-[id="light.bedroom.primary.nono"].entitystate-on{
-    /* Note that we're styling this fill within the ha-floorplan YAML, with a simple bit of JavaScript*/
-    fill-opacity: 0.8!important;
-}
-
-#light-livingroom-primary.entitystate-on{
-    /* The "fill" is here listening for the CSS variable called "livingroom-rgb-color", which will be defined in our ha-floorplan with YAML - that's another way to control the fill*/
+/* Living Room Light */
+#light-livingroom-primary.entity-state-on{
     fill: var(--livingroom-rgb-color)!important;
     fill-opacity: 0.3!important;
-    opacity:1;
-    /* Speaking about opacity:1/opacity0.8/opacity:whatever.... 
-        If you're able to parse the rgb-value to one style...
-         ... could it be possible to control the opacity with something like entity.attributes.brightness?...
-         
-         I guess you know the answers by now ;) .. But... Thats a task you can try and do with your own hands
-    */
+    opacity: 1;
 }
 
-#light-livingroom-primary.entitystate-off{
+#light-livingroom-primary.entity-state-off{
     fill: #0f0e0e!important;
 }
-
-
-#entity-livingroom-tv{
-    /* Reposition tv with -5px on the top */
-    transform: translate(0, -5px);
-}
-#entity-livingroom-tv[class*="-on"]{
-    opacity:1;
-}
-#entity-livingroom-tv[class*="-off"]{
-    opacity:0.3;
-    fill: #000!important;
-    /* Using display:none; will not work - cause then, you can't use the tv-object in the SVG; to toggle it on again... Cause... It's not displaying on the screen*/
-}
-
-
-/*
-rgb_color 
-255, 254, 250
-*/
-
-
-/*
-#myfloorplan1 {
-    display:none;
-}
-*/
-
-/*
-Target one specific element, if class is set like `light-${entity.state}`
-#light-livingroom-primary.light-on{
-    opacity:0;
-}
-#light-livingroom-primary.light-off{
-    opacity:1;
-}
-*/
-
-/* Target a class:
-.light-on{
-    opacity:0;
-}
-.light-off{
-    opacity:1;
-}
-*/
-
-/*
-Control entitiy fill 
-[id="light.bedroom.primary.nono"].entitystate-off{
-    fill: rgb(133, 133, 133)!important;
-    fill-opacity: 0.8!important;
-}
-
-[id="light.bedroom.primary.nono"].entitystate-on{
-    fill: rgb(255, 230, 170)!important;
-    fill-opacity: 0.1!important;
-}
-*/
