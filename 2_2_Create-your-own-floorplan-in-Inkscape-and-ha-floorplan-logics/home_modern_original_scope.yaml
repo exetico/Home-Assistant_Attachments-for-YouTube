@@ -1,0 +1,126 @@
+title: Modern Floorplan
+views:
+  - title: Sample Entities
+    path: sample-entities
+    icon: ""
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - entity: light.hue1_light
+            name: Test Light 1 (light.hue1)
+          - entity: light.hue2_light
+            name: Test Light 2 (light.hue2)
+          - entity: light.hue3_light
+            name: Test Light 3 (light.hue2)
+        title: Test Entities
+  - title: My Modern Floorplan
+    path: floorplan
+    theme: Google Dark Theme
+    panel: true
+    type: panel
+    badges: []
+    cards:
+      - config:
+          console_log_level: info
+          defaults:
+            hover_action: hover-info
+            tap_action: more-info
+          image: /local/floorplan/home_modern/home_modern.svg
+          log_level: info
+          rules:
+            - element: light-livingroom-primary
+              entity: light.hue1_light
+              state_action:
+                - action: call-service
+                  service: floorplan.class_set
+                  service_data: entitystate-${entity.state}
+                - action: call-service
+                  service: floorplan.style_set
+                  service_data:
+                    style: >
+                      > var rgbColor = entity && entity.attributes &&
+                      entity.attributes.rgb_color ? entity.attributes.rgb_color
+                      : false; return rgbColor?
+                      `--livingroom-rgb-color:rgb(${rgbColor});` : '';
+                  #### EXAMPLE START - SEE BELOW
+                  ####                 WILL NOT WORK, CAUSE attr() IS STILL WAITING TO BE IMPLEMENTED BY FIREFOX AND CHROME ++
+                - action: call-service
+                  service: floorplan.dataset_set
+                  service_data:
+                    key: rgbcolor
+                    value: >-
+                      ${entity.attributes.rgb_color} not that this DOES NOT
+                      work, cause the CSS-attr() function cant define a color,
+                      right now. Check the next service-call, instead
+                  #### EXAMPLE END
+                  ####                 So you can just delete the part above this line...
+                  ####                 This is just another way to expose informations to the dom-element.
+                  ####                 By doing so, you'll be able to see a "data-rgbcolor", which could have been used
+                  ####                 in your CSS styling, if it was a simple thing like #sun[data-timeofday="night"]{...},
+                  ####                 and you had a custom sensor in HA, telling if it was "night", "morning", "day" and so on...
+              hold_action: more-info
+              tap_action:
+                action: call-service
+                service: homeassistant.toggle
+            - element: light.bedroom.primary.nono
+              entity: light.hue2_light
+              state_action:
+                - action: call-service
+                  service: floorplan.class_set
+                  service_data: entitystate-${entity.state}
+                - action: call-service
+                  service: floorplan.style_set
+                  service_data:
+                    style: >
+                      > var rgbColor = entity && entity.attributes &&
+                      entity.attributes.rgb_color ? entity.attributes.rgb_color
+                      : false; return rgbColor? `fill:rgb(${rgbColor});` : '';
+            - element: light-restroom-primary
+              entity: light.hue3_light
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data: entitystate-${entity.state}
+              tap_action:
+                action: call-service
+                service: homeassistant.toggle
+            - element: buttons-music-icon
+              entity: input_boolean.dummy_switch_demo1
+              double_tap_action: more-info
+              tap_action: false
+              hover_action: hover-info
+              hover_info_filter:
+                - editable
+                - icon
+                - friendly_name
+            - element: buttons-music-text
+              entity: input_boolean.dummy_switch_demo1
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data: |
+                  > console.log(entity);
+                  return `Tv is currently ${entity.state}`;
+              tap_action: false
+            - element: entity-livingroom-tv
+              entity: input_boolean.dummy_switch_demo1
+              state_action:
+                - action: call-service
+                  service: floorplan.class_set
+                  service_data: entitystate-${entity.state}
+              tap_action:
+                action: call-service
+                service: homeassistant.toggle
+            - element: button.reload
+              double_tap_action:
+              action: fire-dom-event
+              browser_mod:
+                service: browser_mod.javascript
+                data:
+                  code: lovelace_reload();
+          stylesheet: /local/floorplan/home_modern/home_modern.css
+        full_height: true
+        type: custom:floorplan-card
+
+
