@@ -1,0 +1,15 @@
+# Example from the video
+# File: ~/lovelace/floorplan-community.yaml
+
+views:
+  - theme: Case1
+    title: Case1
+    badges: []
+    cards:
+      - !include ../www/floorplan/discussions/case1/case1.yaml
+      #- !include ../www/floorplan/discussions/case2/case2.yaml
+  - theme: Case2
+    title: Case2
+    badges: []
+    cards:
+      - !include ../www/floorplan/discussions/case2/case2.yaml

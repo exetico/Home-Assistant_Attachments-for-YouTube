@@ -1,0 +1,20 @@
+# Example from the video
+# Part of the file: ~/configuration.yaml
+
+# ... 
+# Other content of this file has been removed
+# I'll recommend you to backup the configuration file, if this is the first time doing this
+# ...
+
+# Set Lovelace mode
+lovelace:
+  mode: storage
+  dashboards:
+    # Add dashboard in YAML mode
+    floorplan-community:
+      mode: yaml
+      filename: lovelace/floorplan-community.yaml
+      title: Floorplan Community
+      icon: mdi:account-voice
+      show_in_sidebar: true
+      require_admin: false

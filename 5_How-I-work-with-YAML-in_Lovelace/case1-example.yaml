@@ -1,0 +1,52 @@
+# Example from the video
+# File: ~/www/floorplan/discussions/case1/case1.yaml
+
+type: vertical-stack
+cards:
+  - type: markdown
+    content: >-
+      **Question**: Can I use the same rule for multiple entities,
+      and map the entity-name to a correlated element-key, instead of duplicating my rules?
+
+      [Reference](https://github.com/ExperienceLovelace/ha-floorplan/discussions/266)
+    title: Case 1
+  - type: custom:floorplan-card
+    full_height: false
+    config:
+      stylesheet: /local/floorplan/discussions/case1/case1.css
+      image: /local/floorplan/discussions/case1/case1.svg
+      console_log_level: info
+      defaults:
+        hover_action: hover-info
+        tap_action: more-info
+      rules:
+        # Reload button
+        - element: button.reload
+          tap_action:
+            action: fire-dom-event
+            browser_mod:
+              service: browser_mod.javascript
+              data:
+                code: lovelace_reload();
+        # Case 1
+        - entity:
+            - light.hue1_light
+            - light.hue2_light
+          state_action:
+            action: call-service
+            service: floorplan.text_set
+            service_data:
+              element: |
+                > // Get our type and name
+                const [entityType, entityName] = entity.entity_id.split(".", 2);
+                // Our entity name will be defined in entityName (The light.hue1_light value will be splitted into "light" and "hue1_light")
+                return `customprefix.${entityName}`;
+              text: |
+                > // Get our type and name
+                const [entityType, entityName] = entity.entity_id.split(".", 2);
+
+                // Debug info
+                console.log("entity", entity); console.log("element", element);console.log(entityType, entityName);
+
+                // Our entity name will be defined in entityName (The light.hue1_light value will be splitted into "light" and "hue1_light")
+                return `${entityName} ${entity.state}`;
