@@ -7,3 +7,16 @@
   opacity: 0.7;
   fill: rgb(49, 45, 45) !important;
 }
+
+/*
+Attension: Usage of !important is required, if you've changed or defined the opacity in the original SVG file.
+
+Usage of important will look like this:
+.entitystate-on {
+  opacity: 0!important;
+}
+
+For more CSS related tips, take a look at:
+https://youtu.be/oqO4Vx6U1Mo
+
+*/
