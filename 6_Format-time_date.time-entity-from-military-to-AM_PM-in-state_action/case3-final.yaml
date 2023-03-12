@@ -1,0 +1,56 @@
+type: vertical-stack
+cards:
+  - type: markdown
+    content: >-
+      **Question**: How can I format sensor.time from military to standard (AM-PM).
+
+      [Reference](https://github.com/ExperienceLovelace/ha-floorplan/discussions/302)
+    title: Case 3
+  - type: custom:floorplan-card
+    full_height: false
+    config:
+      stylesheet: /local/floorplan/discussions/case3/case3.css
+      image: /local/floorplan/discussions/case3/case3.svg
+      console_log_level: debug
+      defaults:
+        hover_action: hover-info
+        tap_action: more-info
+      rules:
+        # Reload button
+        - element: button.reload
+          tap_action:
+            action: fire-dom-event
+            browser_mod:
+              service: browser_mod.javascript
+              data:
+                code: lovelace_reload();
+        # Original value
+        - name: OriginalClockValue
+          element: customprefix.text3
+          entities:
+            - sensor.time_fake
+          state_action:
+            - service: floorplan.text_set
+              service_data: ${"Original:" + " " + entity.state}
+        # Case - Short Version
+        - name: ConvertClockToAmPmShort
+          element: customprefix.text1
+          entities:
+            - sensor.time_fake
+          state_action:
+            - service: floorplan.text_set
+              service_data: ${util.date.strftime('%I:%M %p', new Date("1970-01-01 " + entity.state))}
+        # Case - Normal Version
+        - name: ConvertClockToAmPm
+          element: customprefix.text2
+          entities:
+            - sensor.time_fake
+          state_action:
+            - service: floorplan.text_set
+              service_data:
+                text: |
+                  > 
+                  console.log(entity.state);
+                  const dateTimeString = "1970-01-01 " + entity.state // You'll need to provide a date string to new Date()
+                  const dateTimeParsed = new Date(dateTimeString); // New date object created here
+                  return util.date.strftime('%I:%M %p', dateTimeParsed);
